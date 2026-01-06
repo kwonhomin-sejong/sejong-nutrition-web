@@ -1,0 +1,185 @@
+:root{
+  --bg:#f6f7fb; --card:#fff; --line:#e5e7eb;
+  --text:#111827; --muted:#6b7280;
+
+  --A:#22c55e; --B:#84cc16; --C:#f59e0b; --D:#f97316; --E:#ef4444;
+}
+
+*{box-sizing:border-box}
+body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif; background:var(--bg); color:var(--text);}
+
+.topbar{background:var(--card); border-bottom:1px solid var(--line); padding:14px 18px;}
+.brand .title{font-size:20px; font-weight:900;}
+.brand .subtitle{margin-top:6px; font-size:12px; color:var(--muted);}
+
+.layout{
+  max-width:1200px;
+  margin:0 auto;
+  padding:14px;
+  display:grid;
+  grid-template-columns: 360px 1fr;
+  gap:14px;
+}
+@media (max-width: 900px){
+  .layout{grid-template-columns:1fr;}
+}
+
+.panel{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+}
+
+.panelHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+}
+.panelHead h2{margin:0; font-size:16px;}
+.panelHead input{
+  width:170px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  outline:none;
+}
+
+.storeList{display:flex; flex-direction:column; gap:10px;}
+.storeCard{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px;
+  cursor:pointer;
+  background:#fff;
+}
+.storeCard:hover{background:#fafafa}
+.storeCard.active{border-color:#93c5fd; background:#eff6ff;}
+.storeTop{display:flex; justify-content:space-between; align-items:center; gap:8px;}
+.storeName{font-weight:900}
+.badge{font-size:11px; padding:4px 8px; border:1px solid var(--line); border-radius:999px; color:#374151;}
+
+.muted{color:var(--muted); font-size:12px; margin:8px 0 0;}
+.storeHeader h2{margin:0; font-size:18px;}
+.storeMeta{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; font-size:12px; color:var(--muted);}
+
+.menuList{margin-top:12px; display:flex; flex-direction:column; gap:10px;}
+.menuItem{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  background:#fff;
+}
+.menuItem b{font-size:14px;}
+.menuSub{margin-top:8px; color:var(--muted); font-size:12px; display:flex; gap:10px; flex-wrap:wrap;}
+
+.grade{
+  min-width:56px; height:32px;
+  border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-weight:900;
+}
+.grade.A{background:var(--A)}
+.grade.B{background:var(--B)}
+.grade.C{background:var(--C)}
+.grade.D{background:var(--D)}
+.grade.E{background:var(--E)}
+
+.footnote{
+  margin-top:14px;
+  font-size:12px;
+  color:var(--muted);
+  border-top:1px dashed var(--line);
+  padding-top:12px;
+}
+
+.mapBox{
+  width: 100%;
+  height: 260px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background: #f3f4f6;
+  margin-top: 12px;
+}
+
+/* ✅ 영양등급표 카드 */
+.gradeCard{
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+}
+
+.gradeTitle{
+  font-weight: 900;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* 색상은 기존 변수(A~E) 재사용 */
+.gradeBar{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.gradeBar .g{
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: #fff;
+}
+
+.gradeBar .A{ background: var(--A); }
+.gradeBar .B{ background: var(--B); }
+.gradeBar .C{ background: var(--C); }
+.gradeBar .D{ background: var(--D); }
+.gradeBar .E{ background: var(--E); }
+
+.gradeDesc{
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.gradeDesc b{
+  color: var(--text);
+}
+
+.gradeNote{
+  margin: 10px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.panel.left {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 80px);
+}
+
+.storeList {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.gradeCard {
+  margin-top: 12px;
+  flex-shrink: 0;
+}

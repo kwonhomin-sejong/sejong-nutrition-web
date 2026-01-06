@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>세종영양온</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="title">세종영양온</div>
+      <div class="subtitle">세종시 지역화폐 가맹 음식점 건강 정보 서비스</div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- LEFT: 음식점 목록 -->
+    <section class="panel left">
+      <div class="panelHead">
+        <h2>음식점 목록</h2>
+        <input id="q" placeholder="검색(가게명/주소)" />
+      </div>
+      <div id="storeList" class="storeList"></div>
+
+      <!-- ✅ 여기 추가: 영양등급표 -->
+  <div class="gradeCard">
+    <div class="gradeTitle">영양등급표</div>
+
+    <div class="gradeBar">
+      <div class="g A">A</div>
+      <div class="g B">B</div>
+      <div class="g C">C</div>
+      <div class="g D">D</div>
+      <div class="g E">E</div>
+    </div>
+
+    <div class="gradeDesc">
+      <span><b>A</b> 양호</span>
+      <span><b>B</b> 보통</span>
+      <span><b>C</b> 주의</span>
+      <span><b>D</b> 경고</span>
+      <span><b>E</b> 위험</span>
+    </div>
+
+    <p class="gradeNote">※ 본 정보는 참고용 추정치이며 건강·의료적 판단에 이용되지 않습니다.</p>
+  </div>
+    </section>
+
+    <!-- RIGHT: 선택한 음식점 상세/메뉴 -->
+    <section class="panel right">
+      <div id="storeHeader" class="storeHeader">
+        <h2>왼쪽에서 음식점을 선택하세요</h2>
+        <p class="muted">선택하면 메뉴/영양 정보가 여기에 표시됩니다.</p>
+      </div>
+
+      <!-- ✅ 지도 영역 -->
+  <div id="map" class="mapBox"></div>
+
+  <div id="menuList" class="menuList"></div>
+
+      <div id="menuList" class="menuList"></div>
+
+      <p class="footnote">
+        ※ 본 정보는 참고용 추정치이며 건강·의료적 판단에 이용되지 않습니다.
+      </p>
+    </section>
+  </main>
+
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=b4035f7625698f20118c6254d4182a04&autoload=false"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

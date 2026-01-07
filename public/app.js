@@ -371,3 +371,23 @@ async function geocodeDongByAddress(address) {
     });
   });
 }
+
+function loadStoresFromExcel() {
+  const filePath = path.join(__dirname, "data", "sejong_stores.xlsx");
+  const workbook = XLSX.readFile(filePath);
+  const sheetName = workbook.SheetNames[0];
+  const sheet = workbook.Sheets[sheetName];
+
+  const rows = XLSX.utils.sheet_to_json(sheet);
+
+  return rows.map((row, idx) => ({
+    id: idx + 1,
+    name: row["가맹점명"] || row["상호명"] || "",
+    address: (row["사업장 상세주소"] || "")
+      .replace(/\[[^\]]*\]\s*/g, ""), // [30098] 제거
+    tag: "일반음식점",
+    rating: 4.3,
+    reviews: Math.floor(Math.random() * 500) + 10,
+    kcalAvg: Math.floor(Math.random() * 400) + 300,
+  }));
+}

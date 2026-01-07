@@ -334,3 +334,48 @@ async function showStoreOnMap(store) {
     });
   });
 }
+
+async function geocodeDongByAddress(address) {
+  await initMap(); // geocoder 준비용
+
+  const addr = cleanAddress(address);
+  if (!addr) return "";
+
+  return new Promise((resolve) => {
+    geocoder.addressSearch(addr, (result, status) => {
+      if (status !== kakao.maps.services.Status.OK || !result?.length) {
+        resolve("");
+        return;
+      }
+      resolve(pickDongFromGeocode(result[0]) || "");
+    });
+  });
+}
+
+async function init(){
+  const data = await fetchJSON("/api/stores");
+  stores = data.items.map(s => ({ ...s, dong: "" }));
+
+  // 1) 먼저 화면부터 그리기
+  renderStoreList();
+
+  // 2) 지도 SDK/지오코더 준비
+  await initMap();
+
+  // 3) dong 미리 채우기 (순차)
+  for (let i = 0; i < stores.length; i++) {
+    const s = stores[i];
+
+    // 이미 있으면 스킵
+    if (s.dong) continue;
+
+    const dong = await geocodeDongByAddress(s.address);
+    s.dong = dong;
+
+    // 3~5개마다 한 번만 다시 그리기(성능)
+    if (i % 3 === 0) renderStoreList();
+  }
+
+  // 마지막 한번 마무리 렌더
+  renderStoreList();
+}

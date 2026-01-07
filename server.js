@@ -8,9 +8,11 @@ const app = express();
 // 1) Mock Data (나중에 DB/외부API로 교체 가능)
 // ----------------------
 const stores = [
-  { id: 1, name: "페리카나", tag: "이런건 가맹", rating: 4.5, reviews: 1200, kcalAvg: 588, address: "세종특별자치시 갈매로 479", lat: 36.4801, lng: 127.2602  },
-  { id: 2, name: "음식점 B", tag: "이런건 가맹", rating: 4.2, reviews: 310,  kcalAvg: 380, address: "세종시 OO로 XX길 12" , lat: 36.4822, lng: 127.2581 },
-  { id: 3, name: "음식점 C", tag: "이런건 가맹", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종시 AA로 BB길 3",  lat: 36.4788, lng: 127.2655 },
+  { id: 1, name: "페리카나", tag: "일반음식점", rating: 4.5, reviews: 1200, kcalAvg: 588, address: "세종특별자치시 갈매로 479", lat: 36.4801, lng: 127.2602  },
+  { id: 2, name: "두근돼지 김치찜", tag: "일반음식점", rating: 4.2, reviews: 310,  kcalAvg: 380, address: "세종특별자치시 노을3로 19" , lat: 36.4822, lng: 127.2581 },
+  { id: 3, name: "와플스토리", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 한누리대로 311",  lat: 36.4788, lng: 127.2655 },
+  { id: 3, name: "착한양꼬치", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 조치원읍 행복12길 11",  lat: 36.4788, lng: 127.2655 },
+  { id: 3, name: "세종한우곱창", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 나성로 133-15",  lat: 36.4788, lng: 127.2655 },
 ];
 
 const menusByStoreId = {
@@ -24,6 +26,14 @@ const menusByStoreId = {
     { id: 202, name: "샐러드 볼", kcal: 290, protein: 18, sugar: 7, sodium: 420, grade: "A" },
   ],
   3: [
+    { id: 301, name: "매운 볶음", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 302, name: "순한 볶음", kcal: 780, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
+  ],
+  4: [
+    { id: 301, name: "매운 볶음", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 302, name: "순한 볶음", kcal: 780, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
+  ],
+  5: [
     { id: 301, name: "매운 볶음", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
     { id: 302, name: "순한 볶음", kcal: 780, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
   ],

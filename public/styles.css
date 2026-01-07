@@ -44,10 +44,12 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:10px;
+  gap:12px;
   margin-bottom:12px;
 }
-.panelHead h2{margin:0; font-size:16px;}
+.panelHead h2{margin:0;
+  font-size:16px;
+  white-space:nowrap;}
 .panelHead input{
   width:170px;
   padding:10px 12px;
@@ -218,9 +220,12 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
 
 /* 검색 + 칼로리 필터 묶음 */
 .filters{
+  flex:1;
   display:flex;
   align-items:center;
   gap:10px;
+  justify-content:flex-end;
+  min-width:0; /* flex 줄바꿈/축소 안정화 */
 }
 
 .kcalRange{
@@ -240,4 +245,61 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
 .rangeDash{
   color:var(--muted);
   font-size:12px;
+}
+
+/* 검색 input */
+.filters #q{
+  flex:1;
+  min-width:140px;
+  max-width:260px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  outline:none;
+}
+
+/* kcal 필터 박스 */
+.kcalFilter{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 8px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  flex:0 0 auto;
+}
+
+.kcalFilter input{
+  width:92px;         /* 여기 숫자 조절하면 입력칸 넓이 조절됨 */
+  padding:8px 10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  outline:none;
+}
+
+.kcalFilter .tilde{
+  color:var(--muted);
+  font-size:12px;
+  padding:0 2px;
+}
+
+/* ✅ 모바일/좁은 화면에서는 두 줄로 */
+@media (max-width: 520px){
+  .panelHead{
+    align-items:flex-start;
+  }
+  .filters{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .filters #q{
+    max-width:none;
+  }
+  .kcalFilter{
+    justify-content:space-between;
+  }
+  .kcalFilter input{
+    width:100%;
+  }
 }

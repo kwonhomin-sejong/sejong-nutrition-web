@@ -8,6 +8,9 @@ const qEl = $("#q");
 const kcalMinEl = $("#kcalMin");
 const kcalMaxEl = $("#kcalMax");
 
+const kminEl = document.querySelector("#kmin");
+const kmaxEl = document.querySelector("#kmax");
+
 let stores = [];
 let selectedId = null;
 
@@ -93,27 +96,26 @@ async function renderMap(lat, lng, title) {
 }
 
 function renderStoreList(){
-  const q = qEl.value.trim().toLowerCase();
+   const q = qEl.value.trim().toLowerCase();
 
-  const min = Number(kcalMinEl.value);
-  const max = Number(kcalMaxEl.value);
+  const kmin = Number(kminEl.value);
+  const kmax = Number(kmaxEl.value);
 
-  const hasMin = kcalMinEl.value.trim() !== "" && !Number.isNaN(min);
-  const hasMax = kcalMaxEl.value.trim() !== "" && !Number.isNaN(max);
+  const hasMin = kminEl.value !== "";
+  const hasMax = kmaxEl.value !== "";
 
   const filtered = stores.filter(s => {
-    // 1) 텍스트 검색
-    const textOk =
+    const matchText =
       !q ||
-      (s.name || "").toLowerCase().includes(q) ||
-      (s.address || "").toLowerCase().includes(q);
+      s.name.toLowerCase().includes(q) ||
+      s.address.toLowerCase().includes(q);
 
-    // 2) 칼로리 범위 검색 (kcalAvg 기준)
-    const kcal = Number(s.kcalAvg ?? 0);
-    const minOk = !hasMin || kcal >= min;
-    const maxOk = !hasMax || kcal <= max;
+    const kcal = Number(s.kcalAvg) || 0;
 
-    return textOk && minOk && maxOk;
+    const matchMin = !hasMin || kcal >= kmin;
+    const matchMax = !hasMax || kcal <= kmax;
+
+    return matchText && matchMin && matchMax;
   });
 
   storeListEl.innerHTML = "";
@@ -225,9 +227,8 @@ async function init(){
 }
 
 qEl.addEventListener("input", renderStoreList);
-
-kcalMinEl.addEventListener("input", renderStoreList);
-kcalMaxEl.addEventListener("input", renderStoreList);
+kminEl.addEventListener("input", renderStoreList);
+kmaxEl.addEventListener("input", renderStoreList);
 init();
 
 /*function initMap() {

@@ -287,19 +287,65 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
 /* ✅ 모바일/좁은 화면에서는 두 줄로 */
 @media (max-width: 520px){
   .panelHead{
-    align-items:flex-start;
-  }
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* ✅ 필터 줄: 검색 + kcal */
+.filters{
+  width: 100%;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+/* 검색 input */
+.filters #q{
+  flex: 1;
+  min-width: 0;
+  max-width: none;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  outline:none;
+}
+
+/* kcal 범위 */
+.kcalRange{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex: 0 0 auto;
+}
+
+.kcalRange input{
+  width: 110px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  outline:none;
+}
+
+.kcalRange .tilde{
+  color: var(--muted);
+  font-size: 12px;
+  padding: 0 2px;
+}
+
+/* ✅ 좁아지면 필터를 2줄로 */
+@media (max-width: 520px){
   .filters{
-    flex-direction:column;
-    align-items:stretch;
+    flex-direction: column;
+    align-items: stretch;
   }
-  .filters #q{
-    max-width:none;
+  .kcalRange{
+    justify-content: space-between;
   }
-  .kcalFilter{
-    justify-content:space-between;
+  .kcalRange input{
+    width: 100%;
   }
-  .kcalFilter input{
-    width:100%;
-  }
+}
 }

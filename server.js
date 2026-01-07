@@ -9,7 +9,7 @@ const app = express();
 // ----------------------
 const stores = [
   { id: 1, name: "페리카나", tag: "일반음식점", rating: 4.5, reviews: 1200, kcalAvg: 588, address: "세종특별자치시 갈매로 479", lat: 36.4801, lng: 127.2602  },
-  { id: 2, name: "두근돼지 김치찜", tag: "일반음식점", rating: 4.2, reviews: 310,  kcalAvg: 380, address: "세종특별자치시 노을3로 19" , lat: 36.4822, lng: 127.2581 },
+  { id: 2, name: "두근돼지 김치찜", tag: "일반음식점", rating: 4.2, reviews: 310,  kcalAvg: 380, address: "세종특별자치시 노을3로 19 상가동 1층 126호" , lat: 36.4822, lng: 127.2581 },
   { id: 3, name: "와플스토리", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 한누리대로 311",  lat: 36.4788, lng: 127.2655 },
   { id: 4, name: "착한양꼬치", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 조치원읍 행복12길 11",  lat: 36.4789, lng: 127.2656 },
   { id: 5, name: "세종한우곱창", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 나성로 133-15",  lat: 36.4790, lng: 127.2657 },

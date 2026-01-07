@@ -1,22 +1,19 @@
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
-
 const app = express();
 
-const XLSX = require("xlsx");
 //const PORT = process.env.PORT || 3000;
 
 // ----------------------
 // 1) Mock Data (나중에 DB/외부API로 교체 가능)
 // ----------------------
-/*const stores = [
+const stores = [
   { id: 1, name: "페리카나", tag: "일반음식점", rating: 4.5, reviews: 1200, kcalAvg: 588, address: "세종특별자치시 갈매로 479", lat: 36.4801, lng: 127.2602  },
   { id: 2, name: "두근돼지 김치찜", tag: "일반음식점", rating: 4.2, reviews: 310,  kcalAvg: 380, address: "세종특별자치시 노을3로 19 상가동 1층 126호" , lat: 36.4822, lng: 127.2581 },
   { id: 3, name: "와플스토리", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 한누리대로 311",  lat: 36.4788, lng: 127.2655 },
   { id: 4, name: "착한양꼬치", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 조치원읍 행복12길 11",  lat: 36.4789, lng: 127.2656 },
   { id: 5, name: "세종한우곱창", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 나성로 133-15",  lat: 36.4790, lng: 127.2657 },
-];*/
+];
 
 const menusByStoreId = {
   1: [
@@ -52,81 +49,19 @@ app.use(express.static("public"));
 // ----------------------
 
 // (1) 음식점 목록
-/*app.get("/api/stores", (req, res) => {
-  res.json({ items: stores });
-});*/
-
-function loadStoresFromExcel() {
-  // ✅ 파일명을 여기와 실제 파일명이 100% 같아야 함
-  const filePath = path.join(__dirname, "data", "sejong_store.xlsx");
-
-  console.log("[Excel] filePath:", filePath);
-  console.log("[Excel] exists :", fs.existsSync(filePath));
-
-  const workbook = XLSX.readFile(filePath);
-  const sheetName = workbook.SheetNames[0];
-  const sheet = workbook.Sheets[sheetName];
-
-  const rows = XLSX.utils.sheet_to_json(sheet, { defval: "" });
-
-  return rows
-    .map((row, idx) => {
-      const name = row["가맹점명"] || row["상호명"] || "";
-      const addressRaw = row["사업장 상세주소"] || row["주소"] || "";
-      const address = String(addressRaw).replace(/\[[^\]]*\]\s*/g, "").trim(); // [30098] 제거
-
-      if (!name || !address) return null;
-
-      return {
-        id: idx + 1,
-        name,
-        address,
-        tel: row["전화번호"] || row["연락처"] || "",
-        tag: row["업종"] || row["업태"] || "일반음식점",
-        rating: 4.3,
-        reviews: Math.floor(Math.random() * 500) + 10,
-        kcalAvg: Math.floor(Math.random() * 400) + 300,
-      };
-    })
-    .filter(Boolean);
-}
-
-let storesCache = [];
-
 app.get("/api/stores", (req, res) => {
-  try {
-    storesCache = loadStoresFromExcel();  // ✅ 캐시 갱신
-    res.json({ items: storesCache });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "엑셀 로딩 실패" });
-  }
+  res.json({ items: stores });
 });
 
+
 // (2) 음식점 상세
-/*app.get("/api/stores/:id", (req, res) => {
+app.get("/api/stores/:id", (req, res) => {
   const id = Number(req.params.id);
   const store = stores.find(s => s.id === id);
   if (!store) return res.status(404).json({ message: "store not found" });
   res.json(store);
-});*/
-app.get("/api/stores/:id", (req, res) => {
-  const id = Number(req.params.id);
-
-  // 캐시가 비어있으면 한 번 로딩
-  if (!storesCache.length) {
-    try {
-      storesCache = loadStoresFromExcel();
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ error: "엑셀 로딩 실패" });
-    }
-  }
-
-  const store = storesCache.find((s) => s.id === id);
-  if (!store) return res.status(404).json({ message: "store not found" });
-  res.json(store);
 });
+
 // (3) 음식점 메뉴 목록
 app.get("/api/stores/:id/menus", (req, res) => {
   const id = Number(req.params.id);

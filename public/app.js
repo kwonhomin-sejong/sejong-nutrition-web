@@ -14,6 +14,15 @@ let infoWindow = null;
 
 let geocoder = null; // 추가
 
+function pickDongFromGeocode(item) {
+  // address(지번) 쪽이 행정구역 정보가 더 잘 들어오는 편
+  const dong =
+    item?.address?.region_3depth_name ||
+    item?.road_address?.region_3depth_name ||
+    "";
+  return dong;
+}
+
 async function fetchJSON(url){
   const r = await fetch(url);
   if(!r.ok) throw new Error(await r.text());
@@ -89,15 +98,28 @@ function renderStoreList(){
   storeListEl.innerHTML = "";
   filtered.forEach(s => {
     const card = document.createElement("div");
+    const dong = s.dong || ""; // ✅ 캐시된 dong 사용
     card.className = "storeCard" + (s.id === selectedId ? " active" : "");
-    card.innerHTML = `
+    /*card.innerHTML = `
       <div class="storeTop">
         <div class="storeName">${s.name}</div>
         <span class="badge">${s.tag}</span>
       </div>
       <div class="muted">★ ${s.rating} (${formatK(s.reviews)}) · ${s.kcalAvg} kcal</div>
       <div class="muted">📍 ${s.address}</div>
-    `;
+    `;*/
+    card.innerHTML = `
+  <div class="storeTop">
+    <div class="storeName">${s.name}</div>
+    <span class="badge">${s.tag}</span>
+  </div>
+  <div class="muted">★ ${s.rating} (${formatK(s.reviews)}) · ${s.kcalAvg} kcal</div>
+
+  <div class="muted addrLine">
+    <span>📍 ${s.address}</span>
+    ${dong ? `<span class="dongPill">${dong}</span>` : ""}
+  </div>
+`;
     card.addEventListener("click", () => selectStore(s.id));
     storeListEl.appendChild(card);
   });
@@ -112,7 +134,17 @@ async function selectStore(id){
 
   const store = await fetchJSON(`/api/stores/${id}`);
   /*await renderMap(store.lat, store.lng, store.name);*/
-  await showStoreOnMap(store);
+  /*await showStoreOnMap(store);*/
+  const { dong } = await showStoreOnMap(store);
+
+  // ✅ stores 배열에도 캐시(왼쪽 리스트에 바로 반영되게)
+  const idx = stores.findIndex(s => s.id === store.id);
+  if (idx !== -1) stores[idx].dong = dong;
+
+  // ✅ 선택된 store에도 달아두기
+  store.dong = dong;
+
+  renderStoreList();
   const menuRes = await fetchJSON(`/api/stores/${id}/menus`);
   const menus = menuRes.items || [];
 
@@ -123,7 +155,10 @@ async function selectStore(id){
       <span>★ ${store.rating} (${formatK(store.reviews)})</span>
       <span><b>${store.kcalAvg}</b> kcal</span>
     </div>
-    <p class="muted">📍 ${store.address}</p>
+    <p class="muted addrLine">
+  <span>📍 ${store.address}</span>
+  ${store.dong ? `<span class="dongPill">${store.dong}</span>` : ""}
+</p>
   `;
 
   if (menus.length === 0) {
@@ -232,7 +267,7 @@ function cleanAddress(addr) {
   });
 }*/
 
-async function showStoreOnMap(store) {
+/*async function showStoreOnMap(store) {
   await initMap(); // ✅ 지도/지오코더 준비 보장
 
   const addr = cleanAddress(store.address);
@@ -258,5 +293,44 @@ async function showStoreOnMap(store) {
     infoWindow.setContent(
       `<div style="padding:6px 10px;font-size:13px;">${store.name}</div>`);
     infoWindow.open(map, marker);
+  });
+}*/
+
+async function showStoreOnMap(store) {
+  await initMap();
+
+  const addr = cleanAddress(store.address);
+  if (!addr) {
+    alert("주소가 없어서 지도를 표시할 수 없어요.");
+    return { dong: "" };
+  }
+
+  return new Promise((resolve) => {
+    geocoder.addressSearch(addr, function (result, status) {
+      if (status !== kakao.maps.services.Status.OK || !result?.length) {
+        console.warn("주소 검색 실패:", addr, status, result);
+        alert("주소를 찾을 수 없어요. 주소를 더 정확히 입력해 주세요.");
+        resolve({ dong: "" });
+        return;
+      }
+
+      const item = result[0];
+
+      // ✅ 좌표
+      const { x, y } = item; // x=경도, y=위도
+      const pos = new kakao.maps.LatLng(Number(y), Number(x));
+
+      map.setCenter(pos);
+      marker.setPosition(pos);
+
+      infoWindow.setContent(
+        `<div style="padding:6px 10px;font-size:13px;">${store.name}</div>`
+      );
+      infoWindow.open(map, marker);
+
+      // ✅ 행정동(3depth) 뽑기
+      const dong = pickDongFromGeocode(item);
+      resolve({ dong });
+    });
   });
 }

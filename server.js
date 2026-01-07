@@ -19,7 +19,7 @@ const stores = [
   {
     id: 1,
     name: "(주)국사랑세종",
-    tag: "일반음식점",
+    tag: "음식점",
     rating: 4.3,
     reviews: 120,
     kcalAvg: 520,
@@ -29,7 +29,7 @@ const stores = [
   {
     id: 2,
     name: "(주)그로서리스터프",
-    tag: "일반음식점",
+    tag: "음식점",
     rating: 4.1,
     reviews: 95,
     kcalAvg: 480,
@@ -39,7 +39,7 @@ const stores = [
   {
     id: 3,
     name: "(주)더팬테스틱 브래드카페 좋은아침페스츄리 세종보람점",
-    tag: "일반음식점",
+    tag: "음식점",
     rating: 4.4,
     reviews: 210,
     kcalAvg: 560,
@@ -49,7 +49,7 @@ const stores = [
   {
     id: 4,
     name: "(주)디엠 카페브릿지(기독교서점봄)",
-    tag: "일반음식점",
+    tag: "음식점",
     rating: 4.2,
     reviews: 80,
     kcalAvg: 430,
@@ -59,11 +59,11 @@ const stores = [
   {
     id: 5,
     name: "(주)만정에프엔비",
-    tag: "일반음식점",
+    tag: "음식점",
     rating: 4.0,
     reviews: 60,
     kcalAvg: 500,
-    address: "세종특별자치시 국책연구원2로 18 103,104,105호",
+    address: "세종특별자치시 국책연구원2로 18",
     phone: "",
   },
 ];

@@ -8,7 +8,7 @@ const app = express();
 // 1) Mock Data (나중에 DB/외부API로 교체 가능)
 // ----------------------
 const stores = [
-  { id: 1, name: "페리카나", tag: "이런건 가맹", rating: 4.5, reviews: 1200, kcalAvg: 588, address: "세종특별자치시 갈매로 479 상가동 페리카나", lat: 36.4801, lng: 127.2602  },
+  { id: 1, name: "페리카나", tag: "이런건 가맹", rating: 4.5, reviews: 1200, kcalAvg: 588, address: "세종특별자치시 갈매로 479", lat: 36.4801, lng: 127.2602  },
   { id: 2, name: "음식점 B", tag: "이런건 가맹", rating: 4.2, reviews: 310,  kcalAvg: 380, address: "세종시 OO로 XX길 12" , lat: 36.4822, lng: 127.2581 },
   { id: 3, name: "음식점 C", tag: "이런건 가맹", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종시 AA로 BB길 3",  lat: 36.4788, lng: 127.2655 },
 ];

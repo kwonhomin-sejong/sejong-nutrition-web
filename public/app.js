@@ -107,12 +107,6 @@ async function selectStore(id){
   selectedId = id;
   renderStoreList();
 
-  // 기존: 우측 패널 메뉴 렌더링 ...
-  //renderStoreDetail(store);
-
-  // ✅ 지도 갱신
-  //showStoreOnMap(store);
-
   storeHeaderEl.innerHTML = `<h2>불러오는 중...</h2><p class="muted">데이터를 가져오고 있어요.</p>`;
   menuListEl.innerHTML = "";
 
@@ -201,6 +195,7 @@ async function initMap() {
 
     geocoder = new kakao.maps.services.Geocoder(); // ⭐ 주소검색용
   }
+}
 
 function cleanAddress(addr) {
   if (!addr) return "";
@@ -261,8 +256,7 @@ async function showStoreOnMap(store) {
     marker.setPosition(pos);
 
     infoWindow.setContent(
-      `<div style="padding:6px 10px;font-size:13px;">${store.name}</div>`
-    );
+      `<div style="padding:6px 10px;font-size:13px;">${store.name}</div>`);
     infoWindow.open(map, marker);
   });
 }

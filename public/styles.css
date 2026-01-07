@@ -215,3 +215,29 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
   color:#374151;
   line-height:1;
 }
+
+/* 검색 + 칼로리 필터 묶음 */
+.filters{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.kcalRange{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.kcalRange input{
+  width:110px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  outline:none;
+}
+
+.rangeDash{
+  color:var(--muted);
+  font-size:12px;
+}

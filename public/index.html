@@ -18,9 +18,18 @@
     <!-- LEFT: 음식점 목록 -->
     <section class="panel left">
       <div class="panelHead">
-        <h2>음식점 목록</h2>
-        <input id="q" placeholder="검색(가게명/주소)" />
-      </div>
+  <h2>음식점 목록</h2>
+
+  <div class="filters">
+    <input id="q" placeholder="검색(가게명/주소)" />
+
+    <div class="kcalRange">
+      <input id="kcalMin" type="number" inputmode="numeric" placeholder="kcal 최소" />
+      <span class="rangeDash">~</span>
+      <input id="kcalMax" type="number" inputmode="numeric" placeholder="kcal 최대" />
+    </div>
+  </div>
+</div>
       <div id="storeList" class="storeList"></div>
 
       <!-- ✅ 여기 추가: 영양등급표 -->

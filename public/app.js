@@ -5,6 +5,9 @@ const storeHeaderEl = $("#storeHeader");
 const menuListEl = $("#menuList");
 const qEl = $("#q");
 
+const kcalMinEl = $("#kcalMin");
+const kcalMaxEl = $("#kcalMax");
+
 let stores = [];
 let selectedId = null;
 
@@ -91,35 +94,44 @@ async function renderMap(lat, lng, title) {
 
 function renderStoreList(){
   const q = qEl.value.trim().toLowerCase();
-  const filtered = stores.filter(s =>
-    !q || s.name.toLowerCase().includes(q) || s.address.toLowerCase().includes(q)
-  );
+
+  const min = Number(kcalMinEl.value);
+  const max = Number(kcalMaxEl.value);
+
+  const hasMin = kcalMinEl.value.trim() !== "" && !Number.isNaN(min);
+  const hasMax = kcalMaxEl.value.trim() !== "" && !Number.isNaN(max);
+
+  const filtered = stores.filter(s => {
+    // 1) 텍스트 검색
+    const textOk =
+      !q ||
+      (s.name || "").toLowerCase().includes(q) ||
+      (s.address || "").toLowerCase().includes(q);
+
+    // 2) 칼로리 범위 검색 (kcalAvg 기준)
+    const kcal = Number(s.kcalAvg ?? 0);
+    const minOk = !hasMin || kcal >= min;
+    const maxOk = !hasMax || kcal <= max;
+
+    return textOk && minOk && maxOk;
+  });
 
   storeListEl.innerHTML = "";
   filtered.forEach(s => {
     const card = document.createElement("div");
-    const dong = s.dong || ""; // ✅ 캐시된 dong 사용
+    const dong = s.dong || "";
     card.className = "storeCard" + (s.id === selectedId ? " active" : "");
-    /*card.innerHTML = `
+    card.innerHTML = `
       <div class="storeTop">
         <div class="storeName">${s.name}</div>
         <span class="badge">${s.tag}</span>
       </div>
       <div class="muted">★ ${s.rating} (${formatK(s.reviews)}) · ${s.kcalAvg} kcal</div>
-      <div class="muted">📍 ${s.address}</div>
-    `;*/
-    card.innerHTML = `
-  <div class="storeTop">
-    <div class="storeName">${s.name}</div>
-    <span class="badge">${s.tag}</span>
-  </div>
-  <div class="muted">★ ${s.rating} (${formatK(s.reviews)}) · ${s.kcalAvg} kcal</div>
-
-  <div class="muted addrLine">
-    <span>📍 ${s.address}</span>
-    ${dong ? `<span class="dongPill">${dong}</span>` : ""}
-  </div>
-`;
+      <div class="muted addrLine">
+        <span>📍 ${s.address}</span>
+        ${dong ? `<span class="dongPill">${dong}</span>` : ""}
+      </div>
+    `;
     card.addEventListener("click", () => selectStore(s.id));
     storeListEl.appendChild(card);
   });
@@ -213,6 +225,9 @@ async function init(){
 }
 
 qEl.addEventListener("input", renderStoreList);
+
+kcalMinEl.addEventListener("input", renderStoreList);
+kcalMaxEl.addEventListener("input", renderStoreList);
 init();
 
 /*function initMap() {
@@ -371,3 +386,15 @@ async function geocodeDongByAddress(address) {
     });
   });
 }
+
+function normalizeKcalRange(){
+  const min = Number(kcalMinEl.value);
+  const max = Number(kcalMaxEl.value);
+  if (kcalMinEl.value !== "" && kcalMaxEl.value !== "" && min > max) {
+    // min/max 스왑
+    kcalMinEl.value = String(max);
+    kcalMaxEl.value = String(min);
+  }
+}
+kcalMinEl.addEventListener("change", () => { normalizeKcalRange(); renderStoreList(); });
+kcalMaxEl.addEventListener("change", () => { normalizeKcalRange(); renderStoreList(); });

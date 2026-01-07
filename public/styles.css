@@ -5,6 +5,13 @@
   --A:#22c55e; --B:#84cc16; --C:#f59e0b; --D:#f97316; --E:#ef4444;
 }
 
+/* 화면 전체 높이 기준 */
+html, body {
+  height: 100%;
+}
+
+
+
 *{box-sizing:border-box}
 body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif; background:var(--bg); color:var(--text);}
 
@@ -16,6 +23,8 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
   max-width:1200px;
   margin:0 auto;
   padding:14px;
+
+   height: calc(100vh - 72px); /* ✅ topbar 실제 높이에 맞춰 조절(대충 70~90) */
   display:grid;
   grid-template-columns: 360px 1fr;
   gap:14px;
@@ -173,11 +182,14 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
   flex-direction: column;
   /*height: calc(100vh - 80px);*/
   height: 100%;
+  min-height: 0;   /* ⭐ 추가: flex 내부 스크롤 필수 */
 }
+
 
 .storeList {
   flex: 1;
   overflow-y: auto;
+  min-height: 0;   /* ⭐ 추가: 이것도 필수 */
 }
 
 .gradeCard {

@@ -373,7 +373,7 @@ async function geocodeDongByAddress(address) {
 }
 
 function loadStoresFromExcel() {
-  const filePath = path.join(__dirname, "data", "sejong_stores.xlsx");
+  const filePath = path.join(__dirname, "data", "sejong_stores.cell");
   const workbook = XLSX.readFile(filePath);
   const sheetName = workbook.SheetNames[0];
   const sheet = workbook.Sheets[sheetName];

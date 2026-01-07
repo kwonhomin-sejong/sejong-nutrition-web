@@ -7,12 +7,65 @@ const app = express();
 // ----------------------
 // 1) Mock Data (나중에 DB/외부API로 교체 가능)
 // ----------------------
-const stores = [
+/*const stores = [
   { id: 1, name: "페리카나", tag: "일반음식점", rating: 4.5, reviews: 1200, kcalAvg: 588, address: "세종특별자치시 갈매로 479", lat: 36.4801, lng: 127.2602  },
   { id: 2, name: "두근돼지 김치찜", tag: "일반음식점", rating: 4.2, reviews: 310,  kcalAvg: 380, address: "세종특별자치시 노을3로 19 상가동 1층 126호" , lat: 36.4822, lng: 127.2581 },
   { id: 3, name: "와플스토리", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 한누리대로 311",  lat: 36.4788, lng: 127.2655 },
   { id: 4, name: "착한양꼬치", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 조치원읍 행복12길 11",  lat: 36.4789, lng: 127.2656 },
   { id: 5, name: "세종한우곱창", tag: "일반음식점", rating: 4.3, reviews: 76,   kcalAvg: 760, address: "세종특별자치시 나성로 133-15",  lat: 36.4790, lng: 127.2657 },
+];*/
+
+const stores = [
+  {
+    id: 1,
+    name: "(주)국사랑세종",
+    tag: "일반음식점",
+    rating: 4.3,
+    reviews: 120,
+    kcalAvg: 520,
+    address: "세종특별자치시 보듬4로 9 카림에비뉴상가 41호",
+    phone: "044-863-9455",
+  },
+  {
+    id: 2,
+    name: "(주)그로서리스터프",
+    tag: "일반음식점",
+    rating: 4.1,
+    reviews: 95,
+    kcalAvg: 480,
+    address: "세종특별자치시 새롬중앙로 63 1층 110호",
+    phone: "044-862-2118",
+  },
+  {
+    id: 3,
+    name: "(주)더팬테스틱 브래드카페 좋은아침페스츄리 세종보람점",
+    tag: "일반음식점",
+    rating: 4.4,
+    reviews: 210,
+    kcalAvg: 560,
+    address: "세종특별자치시 시청대로 205 1층 좋은아침페스츄리",
+    phone: "044-862-4091",
+  },
+  {
+    id: 4,
+    name: "(주)디엠 카페브릿지(기독교서점봄)",
+    tag: "일반음식점",
+    rating: 4.2,
+    reviews: 80,
+    kcalAvg: 430,
+    address: "세종특별자치시 새롬중앙로 64 6층",
+    phone: "044-715-7982",
+  },
+  {
+    id: 5,
+    name: "(주)만정에프엔비",
+    tag: "일반음식점",
+    rating: 4.0,
+    reviews: 60,
+    kcalAvg: 500,
+    address: "세종특별자치시 국책연구원2로 18 103,104,105호",
+    phone: "",
+  },
 ];
 
 const menusByStoreId = {

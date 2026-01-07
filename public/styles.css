@@ -171,7 +171,8 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
 .panel.left {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 80px);
+  /*height: calc(100vh - 80px);*/
+  height: 100%;
 }
 
 .storeList {
@@ -180,6 +181,7 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
 }
 
 .gradeCard {
-  margin-top: 12px;
+  /*margin-top: 12px;*/
+  margin-top: auto;
   flex-shrink: 0;
 }

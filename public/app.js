@@ -98,7 +98,7 @@ async function renderMap(lat, lng, title) {
   infoWindow.open(map, marker);
 }
 
-function renderStoreList(){
+/*function renderStoreList(){
    const q = qEl.value.trim().toLowerCase();
 
   const kmin = Number(kminEl.value);
@@ -137,6 +137,57 @@ function renderStoreList(){
         ${dong ? `<span class="dongPill">${dong}</span>` : ""}
       </div>
     `;
+    card.addEventListener("click", () => selectStore(s.id));
+    storeListEl.appendChild(card);
+  });
+}*/
+
+function renderStoreList() {
+  const q = (qEl?.value || "").trim().toLowerCase();
+
+  const kminRaw = (kminEl?.value || "").trim();
+  const kmaxRaw = (kmaxEl?.value || "").trim();
+
+  const hasMin = kminRaw !== "";
+  const hasMax = kmaxRaw !== "";
+
+  const kmin = hasMin ? Number(kminRaw) : null;
+  const kmax = hasMax ? Number(kmaxRaw) : null;
+
+  const filtered = stores.filter((s) => {
+    const name = (s.name || "").toLowerCase();
+    const addr = (s.address || "").toLowerCase();
+
+    const matchText = !q || name.includes(q) || addr.includes(q);
+
+    // 현재 stores 데이터에 kcalAvg가 거의 없으니, 없으면 0으로 처리
+    const kcal = Number(s.kcalAvg) || 0;
+
+    const matchMin = !hasMin || kcal >= kmin;
+    const matchMax = !hasMax || kcal <= kmax;
+
+    return matchText && matchMin && matchMax;
+  });
+
+  storeListEl.innerHTML = "";
+
+  filtered.forEach((s) => {
+    const card = document.createElement("div");
+    const dong = s.dong || "";
+
+    card.className = "storeCard" + (s.id === selectedId ? " active" : "");
+    card.innerHTML = `
+      <div class="storeTop">
+        <div class="storeName">${s.name}</div>
+        <span class="badge">${s.tag}</span>
+      </div>
+      <div class="muted">★ ${s.rating} (${formatK(s.reviews)})${s.kcalAvg ? ` · ${s.kcalAvg} kcal` : ""}</div>
+      <div class="muted addrLine">
+        <span>📍 ${s.address}</span>
+        ${dong ? `<span class="dongPill">${dong}</span>` : ""}
+      </div>
+    `;
+
     card.addEventListener("click", () => selectStore(s.id));
     storeListEl.appendChild(card);
   });
@@ -419,7 +470,7 @@ async function geocodeDongByAddress(address) {
   });
 }
 
-function normalizeKcalRange(){
+/*function normalizeKcalRange(){
   const min = Number(kcalMinEl.value);
   const max = Number(kcalMaxEl.value);
   if (kcalMinEl.value !== "" && kcalMaxEl.value !== "" && min > max) {
@@ -430,6 +481,7 @@ function normalizeKcalRange(){
 }
 kcalMinEl.addEventListener("change", () => { normalizeKcalRange(); renderStoreList(); });
 kcalMaxEl.addEventListener("change", () => { normalizeKcalRange(); renderStoreList(); });
+*/
 
 function getStoreKcalStat(storeId){
   const menus = menusByStoreId?.[storeId] || [];

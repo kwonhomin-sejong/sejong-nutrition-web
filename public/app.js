@@ -5,14 +5,14 @@ const storeHeaderEl = $("#storeHeader");
 const menuListEl = $("#menuList");
 const qEl = $("#q");
 
-const kcalMinEl = $("#kcalMin");
-const kcalMaxEl = $("#kcalMax");
+//const kcalMinEl = $("#kcalMin");
+//const kcalMaxEl = $("#kcalMax");
 
-//const kminEl = document.querySelector("#kmin");
-//const kmaxEl = document.querySelector("#kmax");
+const kminEl = document.querySelector("#kmin");
+const kmaxEl = document.querySelector("#kmax");
 
-const kminEl = $("#kmin");
-const kmaxEl = $("#kmax");
+//const kminEl = $("#kmin");
+//const kmaxEl = $("#kmax");
 
 let stores = [];
 let selectedId = null;
@@ -98,7 +98,7 @@ async function renderMap(lat, lng, title) {
   infoWindow.open(map, marker);
 }
 
-/*function renderStoreList(){
+function renderStoreList(){
    const q = qEl.value.trim().toLowerCase();
 
   const kmin = Number(kminEl.value);
@@ -140,37 +140,8 @@ async function renderMap(lat, lng, title) {
     card.addEventListener("click", () => selectStore(s.id));
     storeListEl.appendChild(card);
   });
-}*/
+}
 
-function renderStoreList(){
-  const q = (qEl?.value || "").trim().toLowerCase();
-
-  const kminRaw = (kminEl?.value || "").trim();
-  const kmaxRaw = (kmaxEl?.value || "").trim();
-  const kmin = kminRaw === "" ? null : Number(kminRaw);
-  const kmax = kmaxRaw === "" ? null : Number(kmaxRaw);
-
-  const filtered = stores.filter(s => {
-    // 1) 텍스트 검색: 기존대로 stores 기반
-    const textOk =
-      !q ||
-      (s.name || "").toLowerCase().includes(q) ||
-      (s.address || "").toLowerCase().includes(q);
-
-    if (!textOk) return false;
-
-    // 2) kcal 필터: menusByStoreId 기반
-    //    여기서는 "가게 평균 kcal(avg)" 기준으로 필터할게
-    if (kmin === null && kmax === null) return true;
-
-    const stat = getStoreKcalStat(s.id);
-    if (stat.avg === null) return false; // 메뉴 없으면 kcal 필터에서 제외(원하면 true로 바꿔도 됨)
-
-    if (kmin !== null && stat.avg < kmin) return false;
-    if (kmax !== null && stat.avg > kmax) return false;
-
-    return true;
-  });
 
   storeListEl.innerHTML = "";
   filtered.forEach(s => {
@@ -197,7 +168,7 @@ function renderStoreList(){
     card.addEventListener("click", () => selectStore(s.id));
     storeListEl.appendChild(card);
   });
-}
+
 
 async function selectStore(id){
   selectedId = id;
@@ -476,7 +447,3 @@ function getStoreKcalStat(storeId){
 
   return { min, max, avg };
 }
-
-qEl.addEventListener("input", renderStoreList);
-kminEl.addEventListener("input", renderStoreList);
-kmaxEl.addEventListener("input", renderStoreList);

@@ -215,20 +215,42 @@ const menusByStoreId = {
     { id: 103, name: "대표 메뉴 3", kcal: 320, protein: 30, sugar: 32, sodium: 350, grade: "A" },
   ],
   2: [
-    { id: 201, name: "시그니처 버거", kcal: 520, protein: 26, sugar: 10, sodium: 980, grade: "B" },
-    { id: 202, name: "샐러드 볼", kcal: 290, protein: 18, sugar: 7, sodium: 420, grade: "A" },
+    { id: 201, name: "대표 메뉴 1", kcal: 520, protein: 26, sugar: 10, sodium: 980, grade: "B" },
+    { id: 202, name: "대표 메뉴 2", kcal: 290, protein: 18, sugar: 7, sodium: 420, grade: "A" },
   ],
   3: [
-    { id: 301, name: "매운 볶음", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
-    { id: 302, name: "순한 볶음", kcal: 780, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
+    { id: 301, name: "대표 메뉴 1", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 302, name: "대표 메뉴 2", kcal: 780, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
   ],
   4: [
-    { id: 301, name: "매운 볶음", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
-    { id: 302, name: "순한 볶음", kcal: 780, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
+    { id: 401, name: "대표 메뉴 1", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 402, name: "대표 메뉴 2", kcal: 780, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
   ],
   5: [
-    { id: 301, name: "매운 볶음", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
-    { id: 302, name: "순한 볶음", kcal: 780, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
+    { id: 501, name: "대표 메뉴 1", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 502, name: "대표 메뉴 2", kcal: 780, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
+  ],
+  6: [
+    { id: 601, name: "대표 메뉴 1", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 602, name: "대표 메뉴 2", kcal: 780, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
+  ],
+  7: [
+    { id: 701, name: "대표 메뉴 1", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 701, name: "대표 메뉴 2", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 701, name: "대표 메뉴 3", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 702, name: "대표 메뉴 4", kcal: 780, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
+  ],
+  8: [
+    { id: 801, name: "대표 메뉴 1", kcal: 910, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 802, name: "대표 메뉴 2", kcal: 400, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
+  ],
+  9: [
+    { id: 901, name: "대표 메뉴 1", kcal: 300, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 902, name: "대표 메뉴 2", kcal: 620, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
+  ],
+  10: [
+    { id: 1001, name: "대표 메뉴 1", kcal: 360, protein: 33, sugar: 14, sodium: 1600, grade: "D" },
+    { id: 1002, name: "대표 메뉴 2", kcal: 470, protein: 28, sugar: 9, sodium: 1200, grade: "C" },
   ],
 };
 

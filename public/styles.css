@@ -349,3 +349,62 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
   }
 }
 }
+
+/* ✅ topbar를 좌(브랜드) 우(필터) 2열로 */
+.topbarInner{
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+}
+
+/* ✅ 상단 오른쪽 필터 UI */
+.topFilters{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:0 0 auto;
+}
+
+.topFilters #q{
+  width:260px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  outline:none;
+}
+
+.topFilters .kcalRange{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.topFilters .kcalRange input{
+  width:110px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  outline:none;
+}
+
+.topFilters .tilde{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* ✅ 좁은 화면에서는 필터가 아래로 내려가게 */
+@media (max-width: 900px){
+  .topbarInner{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .topFilters{
+    width:100%;
+  }
+  .topFilters #q{
+    width:100%;
+  }
+}

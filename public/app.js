@@ -8,8 +8,11 @@ const qEl = $("#q");
 const kcalMinEl = $("#kcalMin");
 const kcalMaxEl = $("#kcalMax");
 
-const kminEl = document.querySelector("#kmin");
-const kmaxEl = document.querySelector("#kmax");
+//const kminEl = document.querySelector("#kmin");
+//const kmaxEl = document.querySelector("#kmax");
+
+const kminEl = $("#kmin");
+const kmaxEl = $("#kmax");
 
 let stores = [];
 let selectedId = null;
@@ -95,7 +98,7 @@ async function renderMap(lat, lng, title) {
   infoWindow.open(map, marker);
 }
 
-function renderStoreList(){
+/*function renderStoreList(){
    const q = qEl.value.trim().toLowerCase();
 
   const kmin = Number(kminEl.value);
@@ -129,6 +132,63 @@ function renderStoreList(){
         <span class="badge">${s.tag}</span>
       </div>
       <div class="muted">★ ${s.rating} (${formatK(s.reviews)}) · ${s.kcalAvg} kcal</div>
+      <div class="muted addrLine">
+        <span>📍 ${s.address}</span>
+        ${dong ? `<span class="dongPill">${dong}</span>` : ""}
+      </div>
+    `;
+    card.addEventListener("click", () => selectStore(s.id));
+    storeListEl.appendChild(card);
+  });
+}*/
+
+function renderStoreList(){
+  const q = (qEl?.value || "").trim().toLowerCase();
+
+  const kminRaw = (kminEl?.value || "").trim();
+  const kmaxRaw = (kmaxEl?.value || "").trim();
+  const kmin = kminRaw === "" ? null : Number(kminRaw);
+  const kmax = kmaxRaw === "" ? null : Number(kmaxRaw);
+
+  const filtered = stores.filter(s => {
+    // 1) 텍스트 검색: 기존대로 stores 기반
+    const textOk =
+      !q ||
+      (s.name || "").toLowerCase().includes(q) ||
+      (s.address || "").toLowerCase().includes(q);
+
+    if (!textOk) return false;
+
+    // 2) kcal 필터: menusByStoreId 기반
+    //    여기서는 "가게 평균 kcal(avg)" 기준으로 필터할게
+    if (kmin === null && kmax === null) return true;
+
+    const stat = getStoreKcalStat(s.id);
+    if (stat.avg === null) return false; // 메뉴 없으면 kcal 필터에서 제외(원하면 true로 바꿔도 됨)
+
+    if (kmin !== null && stat.avg < kmin) return false;
+    if (kmax !== null && stat.avg > kmax) return false;
+
+    return true;
+  });
+
+  storeListEl.innerHTML = "";
+  filtered.forEach(s => {
+    const card = document.createElement("div");
+    const dong = s.dong || "";
+    const stat = getStoreKcalStat(s.id); // 메뉴 기반 kcal 표시도 가능
+
+    card.className = "storeCard" + (s.id === selectedId ? " active" : "");
+    card.innerHTML = `
+      <div class="storeTop">
+        <div class="storeName">${s.name}</div>
+        <span class="badge">${s.tag}</span>
+      </div>
+
+      <div class="muted">
+        ★ ${s.rating} (${formatK(s.reviews)}) · ${stat.avg ?? s.kcalAvg} kcal
+      </div>
+
       <div class="muted addrLine">
         <span>📍 ${s.address}</span>
         ${dong ? `<span class="dongPill">${dong}</span>` : ""}
@@ -399,3 +459,24 @@ function normalizeKcalRange(){
 }
 kcalMinEl.addEventListener("change", () => { normalizeKcalRange(); renderStoreList(); });
 kcalMaxEl.addEventListener("change", () => { normalizeKcalRange(); renderStoreList(); });
+
+function getStoreKcalStat(storeId){
+  const menus = menusByStoreId?.[storeId] || [];
+  if (!menus.length) return { min: null, max: null, avg: null };
+
+  const kcals = menus
+    .map(m => Number(m.kcal))
+    .filter(n => Number.isFinite(n));
+
+  if (!kcals.length) return { min: null, max: null, avg: null };
+
+  const min = Math.min(...kcals);
+  const max = Math.max(...kcals);
+  const avg = Math.round(kcals.reduce((a,b)=>a+b,0) / kcals.length);
+
+  return { min, max, avg };
+}
+
+qEl.addEventListener("input", renderStoreList);
+kminEl.addEventListener("input", renderStoreList);
+kmaxEl.addEventListener("input", renderStoreList);

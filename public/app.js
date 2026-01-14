@@ -16,6 +16,7 @@ let marker = null;
 let infoWindow = null;
 let geocoder = null;
 
+
 function pickDongFromGeocode(item) {
   const dong =
     item?.address?.region_3depth_name ||
@@ -225,9 +226,9 @@ async function selectStore(id) {
         <b>${m.name}</b>
         <div class="menuSub">
           <span><b>${m.kcal}</b> kcal</span>
-          <span>단 ${m.protein}g</span>
+          <span>단백질 ${m.protein}g</span>
           <span>당 ${m.sugar}g</span>
-          <span>나 ${m.sodium}mg</span>
+          <span>나트륨 ${m.sodium}mg</span>
         </div>
       </div>
       <div class="grade ${m.grade}">${m.grade}등급</div>

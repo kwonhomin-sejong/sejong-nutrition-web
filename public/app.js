@@ -8,6 +8,9 @@ const qEl = $("#q");
 const kminEl = $("#kmin");
 const kmaxEl = $("#kmax");
 
+// storeId -> menus[]
+const menusCache = new Map();
+
 let stores = [];
 let selectedId = null;
 
@@ -123,7 +126,11 @@ async function geocodeDongByAddress(address) {
   });
 }
 
-function renderStoreList() {
+let renderToken = 0; // 입력이 빠르게 바뀔 때 이전 렌더 무효화용
+
+async function renderStoreList() {
+  const token = ++renderToken;
+
   const q = (qEl?.value || "").trim().toLowerCase();
 
   const kminRaw = (kminEl?.value || "").trim();
@@ -135,23 +142,79 @@ function renderStoreList() {
   const kmin = hasMin ? Number(kminRaw) : null;
   const kmax = hasMax ? Number(kmaxRaw) : null;
 
-  const filtered = stores.filter((s) => {
+  // 1) 먼저 텍스트 검색으로 후보 좁히기 (성능)
+  const textFiltered = stores.filter((s) => {
     const name = (s.name || "").toLowerCase();
     const addr = (s.address || "").toLowerCase();
-
-    const matchText = !q || name.includes(q) || addr.includes(q);
-    if (!matchText) return false;
-
-    // kcalAvg가 없으면(대부분 없음) kcal 필터는 일단 통과시켜서 목록이 사라지지 않게 함
-    const kcalAvg = Number(s.kcalAvg);
-    if ((hasMin || hasMax) && !Number.isFinite(kcalAvg)) return true;
-
-    if (hasMin && kcalAvg < kmin) return false;
-    if (hasMax && kcalAvg > kmax) return false;
-
-    return true;
+    return !q || name.includes(q) || addr.includes(q);
   });
 
+  // 2) kcal 필터가 없으면 그대로 렌더
+  if (!hasMin && !hasMax) {
+    if (token !== renderToken) return;
+    paintStoreList(textFiltered, null);
+    return;
+  }
+
+  // 3) kcal 필터가 있으면, 각 가게의 "대표메뉴 kcal"를 보고 통과 여부 판단
+  const passed = [];
+  const matchedRepMenusByStoreId = new Map(); // storeId -> 매칭된 대표메뉴들(선택적으로 UI에 보여줄 수 있음)
+
+  for (const s of textFiltered) {
+    // 입력이 바뀌면 즉시 중단
+    if (token !== renderToken) return;
+
+    const menus = await getMenusByStoreId(s.id);
+    const reps = getRepresentativeMenus(menus);
+
+    const matched = reps.filter((m) =>
+      inRange(Number(m.kcal), kmin, kmax, hasMin, hasMax)
+    );
+
+    if (matched.length > 0) {
+      passed.push(s);
+      matchedRepMenusByStoreId.set(s.id, matched);
+    }
+  }
+
+  if (token !== renderToken) return;
+  paintStoreList(passed, matchedRepMenusByStoreId);
+}
+
+function paintStoreList(list, matchedRepMenusByStoreId) {
+  storeListEl.innerHTML = "";
+
+  list.forEach((s) => {
+    const card = document.createElement("div");
+    const dong = s.dong || "";
+
+    const matched = matchedRepMenusByStoreId?.get(s.id) || null;
+
+    // 대표메뉴 매칭된 kcal를 간단히 표시(원치 않으면 이 블록 삭제)
+    const matchedText = matched
+      ? `<div class="muted">✅ 대표메뉴 매칭: ${matched
+          .map((m) => `${m.name}(${m.kcal}kcal)`)
+          .join(", ")}</div>`
+      : "";
+
+    card.className = "storeCard" + (s.id === selectedId ? " active" : "");
+    card.innerHTML = `
+      <div class="storeTop">
+        <div class="storeName">${s.name}</div>
+        <span class="badge">${s.tag}</span>
+      </div>
+      <div class="muted">★ ${s.rating} (${formatK(s.reviews)})</div>
+      <div class="muted addrLine">
+        <span>📍 ${s.address}</span>
+        ${dong ? `<span class="dongPill">${dong}</span>` : ""}
+      </div>
+      ${matchedText}
+    `;
+
+    card.addEventListener("click", () => selectStore(s.id));
+    storeListEl.appendChild(card);
+  });
+}
   storeListEl.innerHTML = "";
 
   filtered.forEach((s) => {
@@ -176,7 +239,7 @@ function renderStoreList() {
     card.addEventListener("click", () => selectStore(s.id));
     storeListEl.appendChild(card);
   });
-}
+
 
 async function selectStore(id) {
   selectedId = id;
@@ -263,3 +326,25 @@ kminEl?.addEventListener("input", renderStoreList);
 kmaxEl?.addEventListener("input", renderStoreList);
 
 init();
+
+async function getMenusByStoreId(id) {
+  if (menusCache.has(id)) return menusCache.get(id);
+
+  const res = await fetchJSON(`/api/stores/${id}/menus`);
+  const menus = res.items || [];
+  menusCache.set(id, menus);
+  return menus;
+}
+
+function inRange(kcal, kmin, kmax, hasMin, hasMax) {
+  if (!Number.isFinite(kcal)) return false;
+  if (hasMin && kcal < kmin) return false;
+  if (hasMax && kcal > kmax) return false;
+  return true;
+}
+
+function getRepresentativeMenus(menus) {
+  // 현재 mock 데이터는 대표메뉴 1~3이 앞쪽에 있다는 가정
+  // 실제로는 m.isRepresentative 같은 플래그가 있으면 그걸로 필터하는 게 베스트
+  return (menus || []).slice(0, 3);
+}

@@ -223,17 +223,21 @@ async function selectStore(id) {
     const row = document.createElement("div");
     row.className = "menuItem";
     row.innerHTML = `
-      <div>
-        <b>${m.name}</b>
-        <div class="menuSub">
-          <span><b>${m.kcal}</b> kcal</span>
-          <span>단백질 ${m.protein}g</span>
-          <span>당 ${m.sugar}g</span>
-          <span>나트륨 ${m.sodium}mg</span>
-        </div>
-      </div>
-      <div class="grade ${m.grade}">${m.grade}등급</div>
-    `;
+  <div style="flex:1; min-width:0;">
+    <div class="menuTopLine">
+      <b class="menuName">${m.name}</b>
+      ${m.price ? `<span class="menuPrice">${formatWon(m.price)}</span>` : ""}
+    </div>
+
+    <div class="menuSub">
+      <span><b>${m.kcal}</b> kcal</span>
+      <span>단 ${m.protein}g</span>
+      <span>당 ${m.sugar}g</span>
+      <span>나 ${m.sodium}mg</span>
+    </div>
+  </div>
+  <div class="grade ${m.grade}">${m.grade}등급</div>
+`;
     menuListEl.appendChild(row);
   });
 }
@@ -264,3 +268,9 @@ kminEl?.addEventListener("input", renderStoreList);
 kmaxEl?.addEventListener("input", renderStoreList);
 
 init();
+
+function formatWon(n) {
+  const v = Number(n);
+  if (!Number.isFinite(v) || v <= 0) return "";
+  return v.toLocaleString("ko-KR") + "원";
+}

@@ -209,9 +209,9 @@ const stores = [
 
 const menusByStoreId = {
   1: [
-    { id: 101, name: "대표 메뉴 1", kcal: 500, protein: 50, sugar: 20, sodium: 800, grade: "B" },
-    { id: 102, name: "대표 메뉴 2", kcal: 840, protein: 83, sugar: 32, sodium: 1200, grade: "C" },
-    { id: 103, name: "대표 메뉴 3", kcal: 320, protein: 30, sugar: 32, sodium: 350, grade: "A" },
+    { id: 101, name: "한우육개장", price: 10000, kcal: 500, protein: 50, sugar: 20, sodium: 800, grade: "B" },
+    { id: 102, name: "의정부부대찌개", price: 10000, kcal: 840, protein: 83, sugar: 32, sodium: 1200, grade: "C" },
+    { id: 103, name: "소고기미역국", price: 9000, kcal: 320, protein: 30, sugar: 32, sodium: 350, grade: "A" },
   ],
   2: [
     { id: 201, name: "대표 메뉴 1", kcal: 520, protein: 26, sugar: 10, sodium: 980, grade: "B" },

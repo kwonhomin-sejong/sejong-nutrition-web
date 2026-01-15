@@ -223,26 +223,35 @@ async function selectStore(id) {
   const row = document.createElement("div");
   row.className = "menuItem";
 
-  const imgSrc = m.img || "/images/placeholder.jpg"; // 없으면 기본 이미지
+  const imgSrc = m.img || "/images/placeholder.jpg";
 
   row.innerHTML = `
+    <div class="menuLeft">
+      <img
+        class="menuThumb"
+        src="${imgSrc}"
+        alt="${m.name}"
+        onerror="this.src='/images/placeholder.jpg'"
+      />
+    </div>
+
     <div class="menuMid">
-  <div class="menuTopLine">
-    <b class="menuName">${m.name}</b>
-    ${m.price ? `<span class="menuPrice">${formatWon(m.price)}</span>` : ""}
-  </div>
+      <div class="menuTopLine">
+        <b class="menuName">${m.name}</b>
+        ${m.price ? `<span class="menuPrice">${formatWon(m.price)}</span>` : ""}
+      </div>
 
-  <div class="menuSub">
-    <span><b>${m.kcal}</b> kcal</span>
-    <span>단백질 ${m.protein}g</span>
-    <span>당 ${m.sugar}g</span>
-    <span>나트륨 ${m.sodium}mg</span>
-  </div>
-</div>
+      <div class="menuSub">
+        <span><b>${m.kcal}</b> kcal</span>
+        <span>단백질 ${m.protein}g</span>
+        <span>당 ${m.sugar}g</span>
+        <span>나트륨 ${m.sodium}mg</span>
+      </div>
+    </div>
 
-<div class="menuRight">
-  <div class="grade ${m.grade}">${m.grade}등급</div>
-</div>
+    <div class="menuRight">
+      <div class="grade ${m.grade}">${m.grade}등급</div>
+    </div>
   `;
 
   menuListEl.appendChild(row);

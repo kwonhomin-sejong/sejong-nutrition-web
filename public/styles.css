@@ -85,6 +85,7 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
   justify-content:space-between;
   gap:12px;
   background:#fff;
+  align-items:center; /* ✅ 추가 */
 }
 .menuItem b{font-size:14px;}
 .menuSub{margin-top:8px; color:var(--muted); font-size:12px; display:flex; gap:10px; flex-wrap:wrap;}
@@ -446,4 +447,31 @@ body{margin:0; font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Noto S
   font-weight:800;
   color:var(--text);
   white-space:nowrap;
+}
+
+/* ✅ 메뉴: 왼쪽 이미지 + 오른쪽 정보 */
+.menuLeft{
+  flex: 0 0 auto;
+  width: 72px;
+  height: 72px;
+}
+
+.menuThumb{
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  background: #f3f4f6;
+  display:block;
+}
+
+.menuMid{
+  flex: 1;
+  min-width: 0; /* 긴 메뉴명 말줄임/줄바꿈 안정화 */
+}
+
+.menuRight{
+  flex: 0 0 auto;
+  margin-left: 12px;
 }

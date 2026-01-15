@@ -219,27 +219,35 @@ async function selectStore(id) {
   }
 
   menuListEl.innerHTML = "";
-  menus.forEach((m) => {
-    const row = document.createElement("div");
-    row.className = "menuItem";
-    row.innerHTML = `
-  <div style="flex:1; min-width:0;">
-    <div class="menuTopLine">
-      <b class="menuName">${m.name}</b>
-      ${m.price ? `<span class="menuPrice">${formatWon(m.price)}</span>` : ""}
+ menus.forEach(m => {
+  const row = document.createElement("div");
+  row.className = "menuItem";
+
+  const imgSrc = m.img || "/images/placeholder.jpg"; // 없으면 기본 이미지
+
+  row.innerHTML = `
+    <div class="menuLeft">
+      <img class="menuThumb" src="${imgSrc}" alt="${m.name}"
+           onerror="this.src='/images/placeholder.jpg'"/>
     </div>
 
-    <div class="menuSub">
-      <span><b>${m.kcal}</b> kcal</span>
-      <span>단백질 ${m.protein}g</span>
-      <span>당 ${m.sugar}g</span>
-      <span>나트륨 ${m.sodium}mg</span>
+    <div class="menuMid">
+      <b class="menuName">${m.name}</b>
+      <div class="menuSub">
+        <span><b>${m.kcal}</b> kcal</span>
+        <span>단백질 ${m.protein}g</span>
+        <span>당 ${m.sugar}g</span>
+        <span>나트륨 ${m.sodium}mg</span>
+      </div>
     </div>
-  </div>
-  <div class="grade ${m.grade}">${m.grade}등급</div>
-`;
-    menuListEl.appendChild(row);
-  });
+
+    <div class="menuRight">
+      <div class="grade ${m.grade}">${m.grade}등급</div>
+    </div>
+  `;
+
+  menuListEl.appendChild(row);
+});
 }
 
 async function init() {

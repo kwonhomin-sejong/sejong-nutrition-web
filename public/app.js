@@ -280,8 +280,11 @@ async function init() {
 }
 
 qEl?.addEventListener("input", renderStoreList);
-kminEl?.addEventListener("input", renderStoreList);
-kmaxEl?.addEventListener("input", renderStoreList);
+//kminEl?.addEventListener("input", renderStoreList);
+//kmaxEl?.addEventListener("input", renderStoreList);
+
+kminEl?.addEventListener("input", reloadStores);
+kmaxEl?.addEventListener("input", reloadStores);
 
 init();
 
@@ -289,4 +292,22 @@ function formatWon(n) {
   const v = Number(n);
   if (!Number.isFinite(v) || v <= 0) return "";
   return v.toLocaleString("ko-KR") + "원";
+}
+
+async function reloadStores() {
+  const kminRaw = (kminEl?.value || "").trim();
+  const kmaxRaw = (kmaxEl?.value || "").trim();
+
+  const params = new URLSearchParams();
+  if (kminRaw !== "") params.set("minKcal", kminRaw);
+  if (kmaxRaw !== "") params.set("maxKcal", kmaxRaw);
+
+  const url = params.toString() ? `/api/stores?${params}` : "/api/stores";
+  const data = await fetchJSON(url);
+
+  // 기존처럼 dong 캐시는 유지하고 싶으면: id 기준으로 이전 dong 이어붙이기
+  const dongMap = new Map(stores.map(s => [s.id, s.dong]));
+  stores = (data.items || []).map((s) => ({ ...s, dong: dongMap.get(s.id) || "" }));
+
+  renderStoreList();
 }

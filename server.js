@@ -269,8 +269,42 @@ app.use(express.static("public"));
 // ----------------------
 
 // (1) 음식점 목록
+//app.get("/api/stores", (req, res) => {
+  //res.json({ items: stores });
+//});
+
+// (1) 음식점 목록 (+ kcal 필터 지원)
 app.get("/api/stores", (req, res) => {
-  res.json({ items: stores });
+  const minRaw = req.query.minKcal;
+  const maxRaw = req.query.maxKcal;
+
+  const hasMin = minRaw !== undefined && String(minRaw).trim() !== "";
+  const hasMax = maxRaw !== undefined && String(maxRaw).trim() !== "";
+
+  const minKcal = hasMin ? Number(minRaw) : null;
+  const maxKcal = hasMax ? Number(maxRaw) : null;
+
+  // kcal 필터가 없으면 기존처럼 전체 반환
+  if (!hasMin && !hasMax) {
+    return res.json({ items: stores });
+  }
+
+  const filtered = stores.filter((s) => {
+    const menus = menusByStoreId[s.id] || [];
+    // 메뉴가 없으면(데이터가 없으면) kcal 필터 상황에서는 제외
+    if (menus.length === 0) return false;
+
+    // 메뉴 중 하나라도 범위 내면 true
+    return menus.some((m) => {
+      const kcal = Number(m.kcal);
+      if (!Number.isFinite(kcal)) return false;
+      if (hasMin && kcal < minKcal) return false;
+      if (hasMax && kcal > maxKcal) return false;
+      return true;
+    });
+  });
+
+  res.json({ items: filtered });
 });
 
 
